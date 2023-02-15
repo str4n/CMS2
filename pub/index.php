@@ -32,7 +32,7 @@
             die("BŁĄD: Przekazany plik nie jest obrazem!");
         }
 
-        $newFileName = hash("sha256", $sourceFileName) . hrtime(true) . "." . ".webp";
+        $newFileName = hash("sha256", $sourceFileName) . hrtime(true) . ".webp";
 
         $imageStrig = file_get_contents($tempURL);
 
