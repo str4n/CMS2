@@ -1,5 +1,47 @@
 <?php 
     class Post {
+        private string $title;
+        private string $imageUrl;
+        private string $timeStamp;
+
+        function __construct(string $title, string $imageUrl, string $timeStamp)
+        {
+            $this->title = $title;
+            $this->imageUrl = $imageUrl;
+            $this->timeStamp = $timeStamp;
+        }
+
+        static function get(int $id) : Post {
+
+            global $db;
+            $query = $db->prepare("SELECT * FROM post WHERE id =?");
+            $query->bind_param('i', $id);
+            $query->execute();
+            $result = $query->get_result();
+            $resultArray = $result->fetch_assoc();
+
+            return new Post($resultArray['title'], $resultArray['filename'], $resultArray['timestamp']);
+        }
+
+        static function getPage(int $pageNumber = 1, int $pageSize = 10) {
+            global $db;
+            $query = $db->prepare("SELECT * FROM post LIMIT 10 OFFSET ?");
+            $offset = ($pageNumber -1) * $pageSize;
+            $query->bind_param('i', $offset);
+            $query->execute();
+            $result = $query->get_result();
+            $postsArray = array();
+
+            while ($row = $result->fetch_assoc()) {
+                $post = new Post($row['title'],$row['filename'],$row['timestamp']);
+
+                array_push($postsArray, $post);
+            }
+
+            return $postsArray;
+        }
+
+
         static function upload(string $tempFileName, string $title = "") {
             $uploadDir = "img/";
 
