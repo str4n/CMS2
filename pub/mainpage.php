@@ -11,15 +11,15 @@
         $db = new mysqli('localhost', 'root', '', 'cms');
 
         $sql = "SELECT filename FROM post ORDER BY timestamp DESC";
-    $result = $db->query($sql);
+        $result = $db->query($sql);
 
-    while ($row = $result->fetch_assoc()) {
-        $filename = $row['filename'];
-        $url = "img/" . $filename;
-        echo "<img src='$url'>";
-    }
+        while ($row = $result->fetch_assoc()) {
+            $filename = $row['filename'];
+            $url = "img/" . $filename;
+            echo "<img src='$url'>";
+        }
 
-    $db->close();
+        $db->close();
     ?>
 </body>
 </html>
