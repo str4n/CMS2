@@ -1,6 +1,6 @@
 <?php 
     class Post {
-        static function upload(string $tempFileName) {
+        static function upload(string $tempFileName, string $title = "") {
             $uploadDir = "img/";
 
             $imgInfo = getimagesize($tempFileName);
@@ -25,6 +25,16 @@
             $gdImage = @imagecreatefromstring($imageString);
 
             imagewebp($gdImage, $targetFileName);
+
+            global $db;
+            
+            $dateTime = date("Y-m-d H:i:s");
+
+            $sql = "INSERT INTO post (timestamp, filename, title) VALUE ('$dateTime', '$targetFileName', '$title')";
+
+            $db->query($sql);
+            $db->close();
+    
         }
     }
 ?>

@@ -15,7 +15,7 @@
 
         while ($row = $result->fetch_assoc()) {
             $filename = $row['filename'];
-            $url = "img/" . $filename;
+            $url = "../img/" . $filename;
             echo "<img src='$url'>";
         }
 
