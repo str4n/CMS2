@@ -11,16 +11,18 @@
             $this->timeStamp = $timeStamp;
         }
 
-        static function get(int $id) : Post {
-
+        static function getLast() : Post {
             global $db;
-            $query = $db->prepare("SELECT * FROM post WHERE id =?");
-            $query->bind_param('i', $id);
-            $query->execute();
-            $result = $query->get_result();
-            $resultArray = $result->fetch_assoc();
 
-            return new Post($resultArray['title'], $resultArray['filename'], $resultArray['timestamp']);
+            $query = $db->prepare("SELECT * FROM post ORDER BY timestamp DESC LIMIT 1");
+
+            $query->execute();
+            
+            $result = $query->get_result();
+
+            $row = $result->fetch_assoc();
+            $p = new Post($row['id'], $row['filename'], $row['timestamp']);
+            return $p; 
         }
 
         static function getPage(int $pageNumber = 1, int $pageSize = 10) {
